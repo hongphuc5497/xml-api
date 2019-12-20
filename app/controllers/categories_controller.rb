@@ -8,13 +8,21 @@ class CategoriesController < ApplicationController
     
     respond_to do |format|
       format.html
-      format.xml { render xml: @categories }
+      format.xml { render xml: @categories.as_json(only: [:id, :name]) }
+      # indicate fields dont want to see (eg. id, created_at): as_json(except: [:id, :created_at])
+      # dont want types to be shown : as_json(only: [:id, :name], skip_types: true)
+      # want to include the products in each category : as_json(only: [:id, :name], skip_types: true, root: true, include: :products )
+      # only want to see the product name and quantities : as_json(only: [:id, :name], skip_types: true, root: true, include: {products: {only: [:name, :quantity] } } )
     end
   end
 
   # GET /categories/1
   # GET /categories/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.xml { render xml: @category.as_json }
+    end
   end
 
   # GET /categories/new
